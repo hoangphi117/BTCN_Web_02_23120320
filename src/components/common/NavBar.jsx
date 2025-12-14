@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 
 function NavBar() {
   return (
-    <nav className="bg-[#e6e9f2] shadow-md border-b">
+    <nav className="bg-[#e6e9f2] shadow-md">
       <div className="max-w-[1200px] mx-auto px-4 flex items-center h-14">
         <Link to="/" className="mr-6">
           <Button
