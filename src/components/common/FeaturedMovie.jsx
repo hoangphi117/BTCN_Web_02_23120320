@@ -53,6 +53,24 @@ function FeaturedMovie({ movies }) {
               {movie.title}
             </h2>
           </div>
+
+          <div className="flex items-center justify-center gap-1 my-2">
+            <p className="ml-2 text-gray-600 dark:text-gray-400 font-medium text-lg">
+              Rate: <span className="text-yellow-500">{movie.rate}</span>
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-2 mt-3">
+            {movie.genres &&
+              movie.genres.map((genre, idx) => (
+                <span
+                  key={idx}
+                  className="text-sm font-medium px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full"
+                >
+                  {genre}
+                </span>
+              ))}
+          </div>
         </div>
 
         <button
