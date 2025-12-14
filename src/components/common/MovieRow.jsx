@@ -18,12 +18,26 @@ function MovieCard({ movie }) {
 
   return (
     <div className="basis-1/3 flex-shrink-0 px-2 cursor-pointer relative hover:z-50">
-      <div className="relative w-full aspect-square">
-        <img
-          src={movie.image}
-          alt={movie.title}
-          className="w-full h-full rounded-lg shadow-md transition-all duration-300 ease-out hover:scale-125"
-        />
+      <div className="relative w-full h-full transition-transform duration-300 ease-out hover:scale-125 ">
+        <div className="relative w-full aspect-square text-transparent hover:text-white">
+          <img
+            src={movie.image}
+            alt={movie.title}
+            className="w-full h-full shadow-md "
+          />
+
+          <p
+            className="
+            w-full
+            px-2 py-2
+            text-sm font-medium text-center truncate
+            bg-black/60
+
+            "
+          >
+            {movie.title} ({movie.year})
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -107,7 +121,9 @@ function MovieRow({ title, Movies = [], endpoint }) {
 
   return (
     <section className="relative group my-8">
-      <h2 className="text-2xl font-semibold mb-2">{title}</h2>
+      <h2 className={`text-2xl font-semibold ${foregroundColor} mb-2`}>
+        {title}
+      </h2>
 
       <div className="relative w-full overflow-hidden py-15 -my-12">
         {loading && (
