@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function FeaturedMovie({ movies }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,7 +33,7 @@ function FeaturedMovie({ movies }) {
           onClick={() => changeMovie("prev")}
           className="p-2 rounded-full bg-gray-200/50 dark:bg-slate-700/50 z-20"
         >
-          <span className="text-2xl text-gray-800 dark:text-white">&lt;</span>
+          <ChevronLeft className="w-4 h-4 text-white cursor-pointer" />
         </button>
 
         <div
@@ -77,7 +78,7 @@ function FeaturedMovie({ movies }) {
           onClick={() => changeMovie("next")}
           className="p-2 rounded-full bg-gray-200/50 dark:bg-slate-700/50 z-20"
         >
-          <span className="text-2xl text-gray-800 dark:text-white">&gt;</span>
+          <ChevronRight className="w-4 h-4 text-white cursor-pointer" />
         </button>
       </div>
       <div className="flex justify-center mt-6 gap-2">

@@ -1,5 +1,6 @@
 import { useTheme } from "@/components/theme-provider";
 import { Switch } from "../ui/switch";
+import { Sun, Moon } from "lucide-react";
 
 function Header() {
   const { setTheme, theme } = useTheme();
@@ -36,11 +37,11 @@ function Header() {
           <div className="p-1 hover:bg-[rgb(var(--foreground-rgb))/10] rounded-full transition-colors">
             {theme === "dark" ? (
               <span className="text-lg text-[rgb(var(--foreground-rgb))]">
-                ⏾
+                <Moon />
               </span>
             ) : (
               <span className="text-lg text-[rgb(var(--foreground-rgb))]">
-                𖤓
+                <Sun />
               </span>
             )}
           </div>

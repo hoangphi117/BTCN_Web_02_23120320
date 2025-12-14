@@ -34,7 +34,7 @@ export async function homeLoader() {
       fetchAndExtractData("/movies/top-rated"),
     ]);
 
-    const featuredList = topRatedData.slice(0, 5);
+    const featuredList = popularData.slice(0, 5);
 
     return {
       featuredList: featuredList,
