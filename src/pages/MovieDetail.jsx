@@ -65,13 +65,6 @@ function MovieDetail() {
   return (
     <div className="animate-fade-in pb-20">
       <div className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh]">
-        <button
-          onClick={() => navigate(-1)}
-          className="absolute top-4 left-4 z-20 bg-black/40 hover:bg-black/60 backdrop-blur-md p-2 rounded-full text-white transition-all"
-        >
-          <ChevronLeft size={32} />
-        </button>
-
         <div className="absolute inset-0">
           <img
             src={movie.image}

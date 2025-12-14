@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function FeaturedMovie({ movies }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
+
+  const navigate = useNavigate();
 
   const movie = movies[currentIndex];
 
@@ -37,7 +40,10 @@ function FeaturedMovie({ movies }) {
         </button>
 
         <div
-          className={`flex flex-col items-center transition-opacity duration-300 ease-in-out ${
+          onClick={() => {
+            navigate(`/movie/${movie.id}`);
+          }}
+          className={`flex flex-col items-center transition-opacity duration-300 ease-in-out cursor-pointer ${
             isFading ? "opacity-0" : "opacity-100"
           }`}
         >

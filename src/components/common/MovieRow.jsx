@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const API_ROOT = "/api";
 const APP_TOKEN =
@@ -14,8 +15,15 @@ const PUBLIC_HEADERS = {
 };
 
 function MovieCard({ movie, title }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="basis-1/3 flex-shrink-0 px-2 cursor-pointer relative hover:z-50">
+    <div
+      onClick={() => {
+        navigate(`/movie/${movie.id}`);
+      }}
+      className="basis-1/3 flex-shrink-0 px-2 cursor-pointer relative hover:z-50"
+    >
       <div className="relative w-full h-full transition-transform duration-300 ease-out hover:scale-125 ">
         <div className="relative w-full aspect-square text-transparent hover:text-white">
           <img
