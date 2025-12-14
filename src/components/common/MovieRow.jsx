@@ -17,20 +17,14 @@ function MovieCard({ movie }) {
   const foregroundColor = "text-[rgb(var(--foreground-rgb))]";
 
   return (
-    <div className="basis-1/3 flex-shrink-0 px-2 cursor-pointer relative">
+    <div className="basis-1/3 flex-shrink-0 px-2 cursor-pointer relative hover:z-50">
       <div className="relative w-full aspect-square">
         <img
           src={movie.image}
           alt={movie.title}
-          className="w-full h-full rounded-lg shadow-md transition-all duration-300 ease-out"
+          className="w-full h-full rounded-lg shadow-md transition-all duration-300 ease-out hover:scale-125"
         />
       </div>
-
-      <p
-        className={`mt-4 mb-2 text-sm font-medium truncate ${foregroundColor} text-center`}
-      >
-        {movie.title}
-      </p>
     </div>
   );
 }
@@ -115,15 +109,15 @@ function MovieRow({ title, Movies = [], endpoint }) {
     <section className="relative group my-8">
       <h2 className="text-2xl font-semibold mb-2">{title}</h2>
 
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden py-15 -my-12">
         {loading && (
-          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
             <Loader2 className={`w-8 h-8 animate-spin ${foregroundColor}`} />
           </div>
         )}
 
         <div
-          className="flex transition-transform duration-700 ease-in-out"
+          className="flex transition-transform duration-700 "
           style={{
             transform: `translateX(-${viewIndex * 100}%)`,
           }}
@@ -138,23 +132,26 @@ function MovieRow({ title, Movies = [], endpoint }) {
             </div>
           )}
         </div>
-
-        {/* PREV */}
-        <button
-          onClick={handlePrev}
-          className="absolute left-0 top-0 bottom-0 z-10 w-12 flex items-center justify-center bg-gradient-to-r from-black/50 to-transparent"
-        >
-          <ChevronLeft className="w-10 h-10 text-white drop-shadow-lg active:scale-90 transition-transform" />
-        </button>
-
-        {/* NEXT */}
-        <button
-          onClick={handleNext}
-          className="absolute right-0 top-0 bottom-0 z-10 w-12 flex items-center justify-center bg-gradient-to-l from-black/50 to-transparent"
-        >
-          <ChevronRight className="w-10 h-10 text-white drop-shadow-lg active:scale-90 transition-transform" />
-        </button>
       </div>
+      {/* PREV */}
+      <button
+        onClick={handlePrev}
+        className="absolute -left-10 top-0 bottom-0 z-10 w-12 flex items-center justify-center"
+      >
+        <ChevronLeft
+          className={`w-10 h-10 ${foregroundColor}  active:scale-90 transition-transform`}
+        />
+      </button>
+
+      {/* NEXT */}
+      <button
+        onClick={handleNext}
+        className="absolute -right-10 top-0 bottom-0 z-10 w-12 flex items-center justify-center "
+      >
+        <ChevronRight
+          className={`w-10 h-10 ${foregroundColor}  active:scale-90 transition-transform`}
+        />
+      </button>
     </section>
   );
 }
