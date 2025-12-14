@@ -14,7 +14,7 @@ function Header() {
 
         <div className="w-1/4 flex justify-end items-center gap-3 select-none">
           <div className="flex items-center gap-2">
-            <Switch className="data-[state=unchecked]:bg-gray-300 data-[state=checked]:bg-black" />
+            <Switch className="data-[state=unchecked]:bg-gray-300 data-[state=checked]:bg-black-600" />
           </div>
 
           <button className="p-1 rounded-full">

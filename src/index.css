@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+:root {
+  --background: 255 255 255;
+  --foreground: 0 0 0;
+  --primary: 0 0 0;
+  --header-bg: 240 219 218;
+}
+
+.dark {
+  --background: 15 23 42;
+  --foreground: 248 250 252;
+  --primary: 255 100 100;
+  --header-bg: 30 41 59;
+}
+
+@layer base {
+  :root {
+    --background-rgb: var(--background);
+    --foreground-rgb: var(--foreground);
+    --primary-rgb: var(--primary);
+    --header-bg-rgb: var(--header-bg);
+  }
+}
