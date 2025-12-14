@@ -50,7 +50,9 @@ export async function homeLoader() {
 function Home() {
   const data = useLoaderData();
 
-  return <MainContent featuredList={data.featuredList} />;
+  return (
+    <MainContent featuredList={data.featuredList} popular={data.popular} />
+  );
 }
 
 export default Home;
