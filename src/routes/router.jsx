@@ -4,6 +4,7 @@ import React from "react";
 import MainLayout from "@/components/layouts/MainLayout";
 import Home, { homeLoader } from "@/pages/Home";
 import MovieDetail from "@/pages/MovieDetail";
+import SearchPage from "@/pages/SearchPage";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home />, loader: homeLoader },
       { path: "/movie/:id", element: <MovieDetail /> },
+      { path: "search", element: <SearchPage /> },
     ],
   },
 ]);
