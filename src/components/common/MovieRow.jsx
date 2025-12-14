@@ -13,9 +13,7 @@ const PUBLIC_HEADERS = {
   "Content-Type": "application/json",
 };
 
-function MovieCard({ movie }) {
-  const foregroundColor = "text-[rgb(var(--foreground-rgb))]";
-
+function MovieCard({ movie, title }) {
   return (
     <div className="basis-1/3 flex-shrink-0 px-2 cursor-pointer relative hover:z-50">
       <div className="relative w-full h-full transition-transform duration-300 ease-out hover:scale-125 ">
@@ -35,7 +33,10 @@ function MovieCard({ movie }) {
 
             "
           >
-            {movie.title} ({movie.year})
+            {movie.title}{" "}
+            {title == "Most Popular"
+              ? `(${movie.year})`
+              : `(Rank: ${movie.rank})`}
           </p>
         </div>
       </div>
@@ -139,7 +140,7 @@ function MovieRow({ title, Movies = [], endpoint }) {
           }}
         >
           {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard title={title} key={movie.id} movie={movie} />
           ))}
 
           {movies.length === 0 && !loading && (

@@ -12,6 +12,12 @@ function MainContent({ featuredList, popular, topRated }) {
         Movies={popular}
         endpoint="/movies/most-popular"
       />
+
+      <MovieRow
+        title="Top Rated"
+        Movies={topRated}
+        endpoint-="/movies/top-rated"
+      />
     </div>
   );
 }

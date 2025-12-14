@@ -77,7 +77,11 @@ function Home() {
   const data = useLoaderData();
 
   return (
-    <MainContent featuredList={data.featuredList} popular={data.popular} />
+    <MainContent
+      featuredList={data.featuredList}
+      popular={data.popular}
+      topRated={data.topRated}
+    />
   );
 }
 
