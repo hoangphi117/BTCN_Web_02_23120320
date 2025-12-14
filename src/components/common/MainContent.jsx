@@ -1,8 +1,12 @@
-function MainContent() {
+import React from "react";
+
+import FeaturedMovie from "@/components/common/FeaturedMovie";
+
+function MainContent({ featuredList }) {
   return (
-    <main>
-      <div>hello</div>
-    </main>
+    <div className="space-y-8 py-4">
+      <FeaturedMovie movies={featuredList} />
+    </div>
   );
 }
 

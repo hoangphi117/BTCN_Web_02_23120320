@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import FeaturedMovie from "@/components/common/FeaturedMovie";
+import MainContent from "@/components/common/MainContent";
 
 const API_ROOT = "/api";
 const APP_TOKEN =
@@ -48,9 +48,9 @@ export async function homeLoader() {
 }
 
 function Home() {
-  const { featuredList } = useLoaderData();
+  const data = useLoaderData();
 
-  return <div></div>;
+  return <MainContent featuredList={data.featuredList} />;
 }
 
 export default Home;
