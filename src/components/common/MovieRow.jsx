@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 const API_ROOT = "/api";
 const APP_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
+
 const PAGE_SIZE = 12;
+const ITEMS_PER_VIEW = 3;
 
 const PUBLIC_HEADERS = {
   "x-app-token": APP_TOKEN,
@@ -37,6 +39,9 @@ function MovieRow({ title, Movies = [], endpoint }) {
   const [apiPage, setApiPage] = useState(1);
   const [movies, setMovies] = useState(Movies);
   const [loading, setLoading] = useState(false);
+  const [viewIndex, setViewIndex] = useState(0);
+
+  const maxViewIndex = Math.ceil(movies.length / ITEMS_PER_VIEW) - 1;
 
   useEffect(() => {
     setMovies(Movies);
@@ -53,6 +58,7 @@ function MovieRow({ title, Movies = [], endpoint }) {
         `${API_ROOT}${endpoint}?page=${startPage + 1}&limit=${PAGE_SIZE}`,
         { headers: PUBLIC_HEADERS }
       );
+
       const [res1, res2] = await Promise.all([promise1, promise2]);
 
       let combinedMovies = [];
@@ -61,6 +67,7 @@ function MovieRow({ title, Movies = [], endpoint }) {
         const data1 = await res1.json();
         combinedMovies = [...combinedMovies, ...(data1.data || [])];
       }
+
       if (res2.ok) {
         const data2 = await res2.json();
         combinedMovies = [...combinedMovies, ...(data2.data || [])];
@@ -69,7 +76,7 @@ function MovieRow({ title, Movies = [], endpoint }) {
       if (combinedMovies.length > 0) {
         setMovies(combinedMovies);
         setApiPage(startPage);
-        setViewIndex(0);
+        setViewIndex(0); // reset slider
       }
     } catch (error) {
       console.error("Lỗi tải dữ liệu:", error);
@@ -84,6 +91,24 @@ function MovieRow({ title, Movies = [], endpoint }) {
     }
   }, [endpoint]);
 
+  // NEXT
+  const handleNext = () => {
+    if (viewIndex < maxViewIndex) {
+      setViewIndex((prev) => prev + 1);
+    } else {
+      setViewIndex(0);
+    }
+  };
+
+  // PREV
+  const handlePrev = () => {
+    if (viewIndex > 0) {
+      setViewIndex((prev) => prev - 1);
+    } else {
+      setViewIndex(maxViewIndex);
+    }
+  };
+
   const foregroundColor = "text-[rgb(var(--foreground-rgb))]";
 
   return (
@@ -97,7 +122,12 @@ function MovieRow({ title, Movies = [], endpoint }) {
           </div>
         )}
 
-        <div className="flex flex-wrap">
+        <div
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{
+            transform: `translateX(-${viewIndex * 100}%)`,
+          }}
+        >
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
@@ -108,6 +138,22 @@ function MovieRow({ title, Movies = [], endpoint }) {
             </div>
           )}
         </div>
+
+        {/* PREV */}
+        <button
+          onClick={handlePrev}
+          className="absolute left-0 top-0 bottom-0 z-10 w-12 flex items-center justify-center bg-gradient-to-r from-black/50 to-transparent"
+        >
+          <ChevronLeft className="w-10 h-10 text-white drop-shadow-lg active:scale-90 transition-transform" />
+        </button>
+
+        {/* NEXT */}
+        <button
+          onClick={handleNext}
+          className="absolute right-0 top-0 bottom-0 z-10 w-12 flex items-center justify-center bg-gradient-to-l from-black/50 to-transparent"
+        >
+          <ChevronRight className="w-10 h-10 text-white drop-shadow-lg active:scale-90 transition-transform" />
+        </button>
       </div>
     </section>
   );
