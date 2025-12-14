@@ -5,13 +5,15 @@
   --foreground: 0 0 0;
   --primary: 0 0 0;
   --header-bg: 240 219 218;
+  --nav-bg: 211 225 252;
 }
 
 .dark {
-  --background: 15 23 42;
+  --background: 34 37 42;
   --foreground: 248 250 252;
   --primary: 255 100 100;
   --header-bg: 30 41 59;
+  --nav-bg: 10 21 49;
 }
 
 @layer base {
@@ -20,5 +22,6 @@
     --foreground-rgb: var(--foreground);
     --primary-rgb: var(--primary);
     --header-bg-rgb: var(--header-bg);
+    --nav-bg-rgb: var(--nav-bg);
   }
 }

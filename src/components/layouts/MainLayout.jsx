@@ -5,11 +5,11 @@ import NavBar from "@/components/common/NavBar";
 
 function MainLayout() {
   return (
-    <div className="max-w-[1200px] flex flex-col gap-2 min-h-screen pb-16 mx-auto md:pb-0">
+    <div className="flex flex-col max-w-[1200px] mx-auto gap-2 min-h-screen bg-[rgb(var(--background-rgb))] transition-colors duration-300">
       <Header />
       <NavBar />
 
-      <main className="grow bg-[#ececec] w-full">
+      <main className="grow w-full">
         <div className="mx-auto px-4 sm:px-6">
           <Outlet />
         </div>
