@@ -27,18 +27,44 @@ async function fetchAndExtractData(path, page = 1) {
   return result.data || [];
 }
 
+const parseRevenue = (value) => {
+  if (!value) return 0;
+  return Number(value.replace(/[^0-9.-]+/g, "")) || 0;
+};
+
 export async function homeLoader() {
   try {
-    const [popularData, topRatedData] = await Promise.all([
-      fetchAndExtractData("/movies/most-popular"),
-      fetchAndExtractData("/movies/top-rated"),
+    const TOTAL_PAGES_TO_FETCH = 25;
+
+    const pageNumbers = Array.from(
+      { length: TOTAL_PAGES_TO_FETCH },
+      (_, i) => i + 1
+    );
+
+    const popularPromises = pageNumbers.map((page) =>
+      fetchAndExtractData("/movies/most-popular", page)
+    );
+
+    const [allPopularPages, topRatedData] = await Promise.all([
+      Promise.all(popularPromises),
+      fetchAndExtractData("/movies/top-rated", 1),
     ]);
 
-    const featuredList = popularData.slice(0, 5);
+    const allPopularMovies = allPopularPages.flat();
+
+    const sortedByRevenue = [...allPopularMovies].sort((a, b) => {
+      const revA = parseRevenue(a.box_office_revenue);
+      const revB = parseRevenue(b.box_office_revenue);
+      return revB - revA;
+    });
+
+    const featuredList = sortedByRevenue.slice(0, 5);
+
+    const popularRowData = allPopularPages[0] || [];
 
     return {
       featuredList: featuredList,
-      popular: popularData,
+      popular: popularRowData,
       topRated: topRatedData,
     };
   } catch (error) {

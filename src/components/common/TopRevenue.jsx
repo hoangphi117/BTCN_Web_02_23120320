@@ -55,9 +55,13 @@ function FeaturedMovie({ movies }) {
             </h2>
           </div>
 
-          <div className="flex items-center justify-center gap-1 my-2">
+          <div className="flex flex-col items-center justify-center gap-1 my-2">
             <p className="ml-2 text-gray-600 dark:text-gray-400 font-medium text-lg">
               Rate: <span className="text-yellow-500">{movie.rate}</span>
+            </p>
+            <p className="ml-2 text-gray-600 dark:text-gray-400 font-medium text-lg">
+              Revenue:{" "}
+              <span className="text-green-400">{movie.box_office_revenue}</span>
             </p>
           </div>
 

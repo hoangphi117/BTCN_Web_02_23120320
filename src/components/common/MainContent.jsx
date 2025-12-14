@@ -1,6 +1,6 @@
 import React from "react";
 
-import FeaturedMovie from "@/components/common/FeaturedMovie";
+import FeaturedMovie from "@/components/common/TopRevenue";
 import MovieRow from "./MovieRow";
 
 function MainContent({ featuredList, popular, topRated }) {
