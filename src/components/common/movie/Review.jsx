@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Star, MessageSquare, Filter, ChevronDown } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
+import PaginationControls from "../Pagination";
+
 const API_ROOT = "/api";
 const APP_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
@@ -16,10 +18,11 @@ function MovieReviews({ movieId }) {
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewPage, setReviewPage] = useState(1);
   const [sortBy, setSortBy] = useState("newest");
-  const [hasMoreReviews, setHasMoreReviews] = useState(false);
+
+  const [totalPages, setTotalPages] = useState(1);
   const [totalReviews, setTotalReviews] = useState(0);
 
-  const fetchReviews = async (page, sort, reset = false) => {
+  const fetchReviews = async (page, sort) => {
     if (!movieId) return;
 
     setReviewLoading(true);
@@ -33,21 +36,14 @@ function MovieReviews({ movieId }) {
       const newReviews = result.data || [];
       const pagination = result.pagination || {};
 
-      if (reset) {
-        setReviews(newReviews);
-      } else {
-        setReviews((prev) => [...prev, ...newReviews]);
-      }
+      setReviews(newReviews);
 
       setTotalReviews(pagination.total_items || 0);
-
-      if (pagination.current_page < pagination.total_pages) {
-        setHasMoreReviews(true);
-      } else {
-        setHasMoreReviews(false);
-      }
+      setTotalPages(pagination.total_pages || 1);
+      setReviewPage(pagination.current_page || page);
     } catch (error) {
       console.error("Lỗi tải reviews:", error);
+      setReviews([]);
     } finally {
       setReviewLoading(false);
     }
@@ -55,13 +51,19 @@ function MovieReviews({ movieId }) {
 
   useEffect(() => {
     setReviewPage(1);
-    fetchReviews(1, sortBy, true);
+    fetchReviews(1, sortBy);
   }, [movieId, sortBy]);
 
-  const handleLoadMoreReviews = () => {
-    const nextPage = reviewPage + 1;
-    setReviewPage(nextPage);
-    fetchReviews(nextPage, sortBy, false);
+  useEffect(() => {
+    if (reviewPage > 0 && reviewPage !== 1) {
+      fetchReviews(reviewPage, sortBy);
+    }
+  }, [reviewPage]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setReviewPage(newPage);
+    }
   };
 
   const foregroundColor = "text-[rgb(var(--foreground-rgb))]";
@@ -162,27 +164,14 @@ function MovieReviews({ movieId }) {
         )}
       </div>
 
-      {hasMoreReviews && (
-        <div className="mt-8 text-center">
-          <button
-            onClick={handleLoadMoreReviews}
-            disabled={reviewLoading}
-            className="group flex items-center gap-2 mx-auto px-6 py-2.5 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-all disabled:opacity-50 active:scale-95"
-          >
-            {reviewLoading ? (
-              <>Loading...</>
-            ) : (
-              <>
-                See more
-                <ChevronDown
-                  size={16}
-                  className="group-hover:translate-y-1 transition-transform"
-                />
-              </>
-            )}
-          </button>
-        </div>
-      )}
+      <div className="mt-8">
+        <PaginationControls
+          currentPage={reviewPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          loading={reviewLoading}
+        />
+      </div>
     </section>
   );
 }
