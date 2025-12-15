@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -11,8 +11,28 @@ const PUBLIC_HEADERS = {
   "Content-Type": "application/json",
 };
 
+const fetchUserProfile = async (token) => {
+  const url = `${API_ROOT}/users/profile`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "x-app-token": APP_TOKEN,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Token is invalid or expired.");
+  }
+
+  const result = await response.json();
+  return result.data || result;
+};
+
 export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState(null);
 
   const [user, setUser] = useState(null);
@@ -46,6 +66,22 @@ export function AuthProvider({ children }) {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      fetchUserProfile(token)
+        .then((userData) => {
+          setUser(userData);
+        })
+        .catch((e) => {
+          console.error("Lỗi xác thực token, đăng xuất:", e);
+          localStorage.removeItem("authToken");
+          setUser(null);
+        });
+    } else {
+    }
+  }, []);
+
   const login = async (username, password) => {
     setLoading(true);
     setError(null);
@@ -60,10 +96,11 @@ export function AuthProvider({ children }) {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error("Username or password is incorrect.");
+        throw new Error(result.message || "Username or password is incorrect");
       }
 
-      const { user: userData, token } = result;
+      const { token, user: userData } = result;
+
       localStorage.setItem("authToken", token);
       setUser(userData);
 
@@ -80,6 +117,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
+    isAuthenticated: !!user,
     login,
     register,
     loading,

@@ -3,8 +3,12 @@ import { Switch } from "../ui/switch";
 import { Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import { useAuth } from "@/context/auth";
+
 function Header() {
   const { setTheme, theme } = useTheme();
+
+  const { user } = useAuth();
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -49,13 +53,19 @@ function Header() {
             </div>
           </div>
           <div className="flex text-[rgb(var(--foreground-rgb))]">
-            <Link to="/login" className="hover:underline">
-              Login
-            </Link>
-            <span className="mx-1 text-muted-foreground">/</span>
-            <Link to="/register" className="hover:underline">
-              Register
-            </Link>
+            {user ? (
+              <Link to="/">{user.username}</Link>
+            ) : (
+              <>
+                <Link to="/login" className="hover:underline">
+                  Login
+                </Link>
+                <span className="mx-1 text-muted-foreground">/</span>
+                <Link to="/register" className="hover:underline">
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
