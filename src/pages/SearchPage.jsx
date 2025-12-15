@@ -14,7 +14,7 @@ const PUBLIC_HEADERS = {
 
 function SearchPage() {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("title");
+  const query = searchParams.get("q");
 
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ function SearchPage() {
       setSearched(true);
       try {
         const response = await fetch(
-          `${API_ROOT}/movies/search?title=${encodeURIComponent(
+          `${API_ROOT}/movies/search?q=${encodeURIComponent(
             query
           )}&page=1&limit=20`,
           { headers: PUBLIC_HEADERS }
