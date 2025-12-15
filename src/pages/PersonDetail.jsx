@@ -80,23 +80,25 @@ function PersonDetail() {
             Role: {person.role}
           </p>
 
-          <div className={`p-4 rounded-xl dark:bg-slate-800 text-sm`}>
-            <h3 className="font-bold text-white mb-3 border-b pb-2 border-gray-200 dark:border-gray-700">
+          <div
+            className={`p-4 rounded-xl shadow-xl border dark:bg-slate-800 text-sm`}
+          >
+            <h3 className="font-bold dark:text-white mb-3 border-b pb-2 border-gray-200 dark:border-gray-700">
               Personal Info
             </h3>
 
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Cake size={18} className="text-pink-500" />
-                <span className="text-white">Born: {birthDate}</span>
+                <span className="dark:text-white">Born: {birthDate}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Ruler size={18} className="text-teal-500" />
-                <span className="text-white">Height: {person.height}</span>
+                <span className="dark:text-white">Height: {person.height}</span>
               </div>
               {isDead && (
                 <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
-                  <span>🪦 Died: {deathDate}</span>
+                  <span className="dark:text-white">🪦 Died: {deathDate}</span>
                 </div>
               )}
               {person.awards && (

@@ -5,7 +5,7 @@ import NavBar from "@/components/common/NavBar";
 
 function MainLayout() {
   return (
-    <div className="flex flex-col max-w-[1200px] mx-auto gap-2 min-h-screen bg-[rgb(var(--background-rgb))] transition-colors duration-300">
+    <div className="flex flex-col max-w-[1200px] mx-auto gap-2 min-h-screen transition-colors duration-300">
       <Header />
       <NavBar />
 

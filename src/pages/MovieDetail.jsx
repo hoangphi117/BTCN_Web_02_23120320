@@ -182,43 +182,6 @@ function MovieDetail() {
             </div>
           </section>
 
-          {movie.reviews && movie.reviews.length > 0 && (
-            <section>
-              <h3 className={`text-2xl font-bold mb-4 ${foregroundColor}`}>
-                Reviews
-              </h3>
-              <div className="space-y-4">
-                {movie.reviews.slice(0, 3).map((review, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-xl bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700"
-                  >
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs">
-                          {review.user.charAt(0).toUpperCase()}
-                        </div>
-                        <span className={`font-bold ${foregroundColor}`}>
-                          {review.user}
-                        </span>
-                      </div>
-                      {review.rate && (
-                        <span className="flex items-center gap-1 text-yellow-500 font-bold text-sm">
-                          <Star size={14} fill="currentColor" /> {review.rate}
-                        </span>
-                      )}
-                    </div>
-                    <h4 className={`font-bold text-sm mb-1 ${foregroundColor}`}>
-                      {review.title}
-                    </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 italic">
-                      "{review.content}"
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
           {movie.similar_movies && (
             <section className="mt-8">
               <h3 className={`text-2xl font-bold mb-4 ${foregroundColor}`}>
@@ -235,7 +198,7 @@ function MovieDetail() {
 
         <div className="space-y-6">
           <div
-            className={`p-6 rounded-2xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-white`}
+            className={`p-6 rounded-2xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 dark:text-white`}
           >
             <h3 className="font-bold text-xl mb-4 flex items-center gap-2">
               <DollarSign size={20} className="text-green-500" /> Box Office
@@ -268,7 +231,7 @@ function MovieDetail() {
           )}
 
           <div
-            className={`p-6 rounded-2xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-white`}
+            className={`p-6 rounded-2xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 dark:text-white`}
           >
             <h3 className="font-bold text-xl mb-4 flex items-center gap-2">
               <User size={20} /> Directors

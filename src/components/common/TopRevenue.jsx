@@ -34,9 +34,9 @@ function FeaturedMovie({ movies }) {
       <div className="flex items-center justify-between">
         <button
           onClick={() => changeMovie("prev")}
-          className="p-2 rounded-full bg-gray-200/50 dark:bg-slate-700/50 z-20"
+          className="p-2 rounded-full bg-gray-200/50 dark:bg-slate-700/50 dark:border dark:border-gray-500 z-20"
         >
-          <ChevronLeft className="w-4 h-4 text-white cursor-pointer" />
+          <ChevronLeft className="w-4 h-4 dark:text-white cursor-pointer" />
         </button>
 
         <div
@@ -86,9 +86,9 @@ function FeaturedMovie({ movies }) {
 
         <button
           onClick={() => changeMovie("next")}
-          className="p-2 rounded-full bg-gray-200/50 dark:bg-slate-700/50 z-20"
+          className="p-2 rounded-full bg-gray-200/50 dark:bg-slate-700/50 dark:border dark:border-gray-500 z-20"
         >
-          <ChevronRight className="w-4 h-4 text-white cursor-pointer" />
+          <ChevronRight className="w-4 h-4 dark:text-white cursor-pointer" />
         </button>
       </div>
       <div className="flex justify-center mt-6 gap-2">
