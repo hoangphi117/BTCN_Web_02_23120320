@@ -104,10 +104,13 @@ export function AuthProvider({ children }) {
         throw new Error(result.message || "Username or password is incorrect");
       }
 
-      const { token, user: userData } = result;
+      const { token } = result;
 
       localStorage.setItem("authToken", token);
-      setUser(userData);
+
+      const fullUserData = await fetchUserProfile(token);
+
+      setUser(fullUserData);
 
       return result;
     } catch (err) {
