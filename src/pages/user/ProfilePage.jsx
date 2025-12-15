@@ -23,14 +23,12 @@ import {
 } from "@/components/ui/form";
 import { useAuth } from "@/context/auth";
 
-// --- CẤU HÌNH API ---
 const API_ROOT = "/api";
 const APP_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
 
-// --- 1. ĐỊNH NGHĨA SCHEMA VALIDATION VỚI ZOD ---
 const profileSchema = z.object({
-  email: z.string().email("Email không hợp lệ"),
+  email: z.string().email("Invalid email"),
   phone: z.string().regex(/^(0|\+84)(3|5|7|8|9)[0-9]{8}$/, {
     message: "Invalid phone number",
   }),
@@ -52,6 +50,7 @@ function ProfilePage() {
       phone: "",
       dob: "",
     },
+    mode: "onBlur",
   });
 
   useEffect(() => {
@@ -77,7 +76,6 @@ function ProfilePage() {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("Bạn chưa đăng nhập!");
 
-      // Gọi API PATCH /users/profile
       const response = await fetch(`${API_ROOT}/users/profile`, {
         method: "PATCH",
         headers: {
@@ -91,7 +89,7 @@ function ProfilePage() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Cập nhật thất bại.");
+        throw new Error(result.message || "Update failed.");
       }
 
       const updatedUser = result.data || { ...user, ...values };
@@ -99,7 +97,7 @@ function ProfilePage() {
 
       setMessage({
         type: "success",
-        content: "Cập nhật thông tin thành công!",
+        content: "Update complete!",
       });
     } catch (error) {
       console.error("Profile update error:", error);
@@ -161,7 +159,7 @@ function ProfilePage() {
                         />
                       </div>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-500" />
                   </FormItem>
                 )}
               />
@@ -188,7 +186,7 @@ function ProfilePage() {
                         />
                       </div>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-500" />
                   </FormItem>
                 )}
               />
@@ -215,7 +213,7 @@ function ProfilePage() {
                         />
                       </div>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-500" />
                   </FormItem>
                 )}
               />

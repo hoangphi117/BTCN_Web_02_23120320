@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { Loader2 } from "lucide-react";
 
 const AuthContext = createContext();
 
@@ -37,6 +38,8 @@ export function AuthProvider({ children }) {
 
   const [user, setUser] = useState(null);
 
+  const [isInitializing, setIsInitializing] = useState(true);
+
   const register = async (userData) => {
     setLoading(true);
     setError(null);
@@ -68,18 +71,20 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    if (token) {
-      fetchUserProfile(token)
-        .then((userData) => {
+    const initialize = async () => {
+      if (token) {
+        try {
+          const userData = await fetchUserProfile(token);
           setUser(userData);
-        })
-        .catch((e) => {
+        } catch (e) {
           console.error("Lỗi xác thực token, đăng xuất:", e);
           localStorage.removeItem("authToken");
           setUser(null);
-        });
-    } else {
-    }
+        }
+      }
+      setIsInitializing(false);
+    };
+    initialize();
   }, []);
 
   const login = async (username, password) => {
@@ -123,13 +128,24 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
+    setUser,
     isAuthenticated: !!user,
     login,
     register,
     logout,
     loading,
     error,
+    isInitializing,
   };
+
+  if (isInitializing) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-xl text-[rgb(var(--foreground-rgb))]">
+        <Loader2 className="mr-3 h-6 w-6 animate-spin text-blue-500" />
+        Đang tải dữ liệu người dùng...
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider value={value}> {children} </AuthContext.Provider>
