@@ -11,7 +11,7 @@ function NavBar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
-      navigate(`/search?title=${encodeURIComponent(keyword)}`);
+      navigate(`/search?q=${encodeURIComponent(keyword)}`);
       setKeyword("");
     }
   };
