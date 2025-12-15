@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { Loader2, ArrowLeft } from "lucide-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +19,37 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { useAuth } from "@/context/auth";
 
+const registerSchema = z
+  .object({
+    username: z
+      .string()
+      .min(3, { message: "Username must be greater than 2 characters" }),
+    email: z.string().email({ message: "Invalid email address" }),
+    phone: z.string().regex(/^(0|\+84)(3|5|7|8|9)[0-9]{8}$/, {
+      message: "Invalid phone number",
+    }),
+    dob: z.string().refine((date) => new Date(date) <= new Date(), {
+      message: "Date of birth cannot be in the future",
+    }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" })
+      .regex(/(?=.*[a-z])/, {
+        message: "Password must contain at least one lowercase letter",
+      })
+      .regex(/(?=.*[A-Z])/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/(?=.*\d)/, {
+        message: "Password must contain at least one number",
+      }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 function RegisterPage() {
   const navigate = useNavigate();
   const { register: registerUser, loading } = useAuth();
@@ -25,11 +58,11 @@ function RegisterPage() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm({ mode: "onBlur" });
-
-  const password = watch("password");
+  } = useForm({
+    mode: "onBlur",
+    resolver: zodResolver(registerSchema),
+  });
 
   const onSubmit = async (data) => {
     setSubmitError(null);
@@ -37,10 +70,10 @@ function RegisterPage() {
 
     try {
       await registerUser(apiData);
-      alert("Đăng ký thành công! Vui lòng đăng nhập.");
+      alert("Registration successful! Please login.");
       navigate("/login");
     } catch (err) {
-      setSubmitError(err.message || "Đăng ký thất bại");
+      setSubmitError(err.message || "Registration failed");
     }
   };
 
@@ -76,15 +109,14 @@ function RegisterPage() {
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Username */}
             <div className="space-y-1">
               <Label htmlFor="username" className={foregroundColor}>
                 Username
               </Label>
               <Input
                 id="username"
-                {...register("username", {
-                  required: "Vui lòng nhập tên đăng nhập",
-                })}
+                {...register("username")}
                 className={`focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 bg-transparent border-gray-300 dark:border-gray-700 ${foregroundColor}`}
               />
               {errors.username && (
@@ -94,6 +126,7 @@ function RegisterPage() {
               )}
             </div>
 
+            {/* Email */}
             <div className="space-y-1">
               <Label htmlFor="email" className={foregroundColor}>
                 Email
@@ -101,13 +134,7 @@ function RegisterPage() {
               <Input
                 id="email"
                 type="email"
-                {...register("email", {
-                  required: "Vui lòng nhập email",
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: "Email không hợp lệ",
-                  },
-                })}
+                {...register("email")}
                 className={`focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 bg-transparent border-gray-300 dark:border-gray-700 ${foregroundColor}`}
               />
               {errors.email && (
@@ -117,15 +144,14 @@ function RegisterPage() {
               )}
             </div>
 
+            {/* Phone */}
             <div className="space-y-1">
               <Label htmlFor="phone" className={foregroundColor}>
                 Phone
               </Label>
               <Input
                 id="phone"
-                {...register("phone", {
-                  required: "Vui lòng nhập số điện thoại",
-                })}
+                {...register("phone")}
                 className={`focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 bg-transparent border-gray-300 dark:border-gray-700 ${foregroundColor}`}
               />
               {errors.phone && (
@@ -135,6 +161,7 @@ function RegisterPage() {
               )}
             </div>
 
+            {/* Date of Birth */}
             <div className="space-y-1">
               <Label htmlFor="dob" className={foregroundColor}>
                 Date of birth
@@ -143,7 +170,7 @@ function RegisterPage() {
                 id="dob"
                 type="date"
                 className={`focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 bg-transparent border-gray-300 dark:border-gray-700 ${foregroundColor} dark:[color-scheme:dark]`}
-                {...register("dob", { required: "Vui lòng nhập ngày sinh" })}
+                {...register("dob")}
               />
               {errors.dob && (
                 <p className="text-sm text-red-500 font-medium">
@@ -152,6 +179,7 @@ function RegisterPage() {
               )}
             </div>
 
+            {/* Password */}
             <div className="space-y-1">
               <Label htmlFor="password" className={foregroundColor}>
                 Password
@@ -159,10 +187,7 @@ function RegisterPage() {
               <Input
                 id="password"
                 type="password"
-                {...register("password", {
-                  required: "Vui lòng nhập mật khẩu",
-                  minLength: { value: 6, message: "Tối thiểu 6 ký tự" },
-                })}
+                {...register("password")}
                 className={`focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 bg-transparent border-gray-300 dark:border-gray-700 ${foregroundColor}`}
               />
               {errors.password && (
@@ -172,6 +197,7 @@ function RegisterPage() {
               )}
             </div>
 
+            {/* Confirm Password */}
             <div className="space-y-1">
               <Label htmlFor="confirmPassword" className={foregroundColor}>
                 Confirm password
@@ -180,10 +206,7 @@ function RegisterPage() {
                 id="confirmPassword"
                 type="password"
                 className={`focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 bg-transparent border-gray-300 dark:border-gray-700 ${foregroundColor}`}
-                {...register("confirmPassword", {
-                  required: "Vui lòng nhập lại mật khẩu",
-                  validate: (val) => val === password || "Mật khẩu không khớp",
-                })}
+                {...register("confirmPassword")}
               />
               {errors.confirmPassword && (
                 <p className="text-sm text-red-500 font-medium">
