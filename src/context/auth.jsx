@@ -115,11 +115,18 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("authToken");
+    setUser(null);
+    window.location.href = "/login";
+  };
+
   const value = {
     user,
     isAuthenticated: !!user,
     login,
     register,
+    logout,
     loading,
     error,
   };

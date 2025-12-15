@@ -8,7 +8,7 @@ import { useAuth } from "@/context/auth";
 function Header() {
   const { setTheme, theme } = useTheme();
 
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -54,7 +54,18 @@ function Header() {
           </div>
           <div className="flex text-[rgb(var(--foreground-rgb))]">
             {user ? (
-              <Link to="/">{user.username}</Link>
+              <>
+                <Link to="/" className="hover:underline">
+                  {user.username}
+                </Link>
+                <span className="mx-1 text-muted-foreground"></span>
+                <button
+                  onClick={logout}
+                  className="text-red-600 hover:underline cursor-pointer"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <>
                 <Link to="/login" className="hover:underline">
