@@ -12,6 +12,7 @@ import LoginPage from "@/pages/auth/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const ProfilePage = lazy(() => import("@/pages/user/ProfilePage.jsx"));
+const FavoritePage = lazy(() => import("@/pages/user/FavoritePage.jsx"));
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: "users/profile", element: <ProfilePage /> },
-          //   { path: "favorites", element: <FavoritePage /> },
+          { path: "users/favorites", element: <FavoritePage /> },
         ],
       },
     ],

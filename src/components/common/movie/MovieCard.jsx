@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Star, Calendar, Clock } from "lucide-react";
+
+import { useAuth } from "@/context/auth";
 
 import FavoriteButton from "./FavoriteButton";
 
 function MovieCard({ movie }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const isMovieFavorited = useMemo(() => {
+    if (!user || !user.favorites) return false;
+    return user.favorites.some((fav) => {
+      return fav.movieId === movie.id || fav.id === movie.id;
+    });
+  }, [user, movie.id]);
 
   const foregroundColor = "text-[rgb(var(--foreground-rgb))]";
 
@@ -23,7 +33,10 @@ function MovieCard({ movie }) {
         />
 
         <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-          <FavoriteButton movieId={movie.id} />
+          <FavoriteButton
+            movieId={movie.id}
+            initialIsFavorite={isMovieFavorited}
+          />
         </div>
 
         {movie.rank && (

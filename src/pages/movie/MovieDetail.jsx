@@ -12,6 +12,7 @@ import {
 
 import MovieCard from "@/components/common/movie/MovieCard";
 import MovieReviews from "@/components/common/movie/Review";
+import FavoriteButton from "@/components/common/movie/FavoriteButton";
 
 const API_ROOT = "/api";
 const APP_TOKEN =
@@ -27,6 +28,8 @@ function MovieDetail() {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const [isMovieFavorited, setIsMovieFavorited] = useState(false);
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
@@ -82,6 +85,13 @@ function MovieDetail() {
               src={movie.image}
               alt={movie.title}
               className="w-full h-auto object-cover"
+            />
+          </div>
+
+          <div className="absolute top-2 right-2 z-10">
+            <FavoriteButton
+              movieId={movie.id}
+              initialIsFavorite={isMovieFavorited}
             />
           </div>
 

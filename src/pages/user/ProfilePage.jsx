@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Loader2, Save, User, Calendar, Phone, Mail } from "lucide-react";
+import {
+  Loader2,
+  Save,
+  User,
+  Calendar,
+  Phone,
+  Mail,
+  Heart,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -122,6 +131,14 @@ function ProfilePage() {
           <CardDescription className={`${foregroundColor}`}>
             Manage and update your information
           </CardDescription>
+          <Link to="/users/favorites" className="flex gap-1">
+            <Heart size={20} className="text-pink-400" />
+            <span
+              className={`${foregroundColor} text-sm text-yellow-400 hover:underline`}
+            >
+              See favorite movies
+            </span>
+          </Link>
         </CardHeader>
 
         <CardContent>
