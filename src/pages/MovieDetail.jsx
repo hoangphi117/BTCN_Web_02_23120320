@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import MovieCard from "@/components/common/MovieCard";
+import MovieReviews from "@/components/common/Review";
 
 const API_ROOT = "/api";
 const APP_TOKEN =
@@ -181,6 +182,8 @@ function MovieDetail() {
                 ))}
             </div>
           </section>
+
+          <MovieReviews movieId={movie.id} />
 
           {movie.similar_movies && (
             <section className="mt-8">
