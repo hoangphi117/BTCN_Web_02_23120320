@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
@@ -25,30 +24,36 @@ function NavBar() {
             size="icon"
             className="hover:bg-transparent cursor-pointer"
           >
-            <span className="text-2xl text-[rgb(var(--foreground-rgb))] transition-colors">
+            <span className="text-2xl text-[rgb(var(--foreground-rgb))]">
               🏠︎
             </span>
           </Button>
         </Link>
 
-        <form
-          onSubmit={handleSearch}
-          className="flex flex-1 justify-end items-center space-x-2"
-        >
-          <Input
-            type="text"
-            placeholder="Search"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            className="w-[200px] bg-[rgb(var(--background-rgb))] text-[rgb(var(--foreground-rgb))] focus-visible:ring-0 transition-colors"
-          />
-          <Button
-            onClick={handleSearch}
-            className="border rounded cursor-pointer text-[rgb(var(--foreground-rgb))] transition-colors"
+        <div className="ml-auto flex items-center gap-4">
+          <Link
+            to="/users/profile"
+            className="hover:underline text-[rgb(var(--foreground-rgb))]"
           >
-            Search
-          </Button>
-        </form>
+            Profile
+          </Link>
+
+          <form onSubmit={handleSearch} className="flex items-center gap-2">
+            <Input
+              type="text"
+              placeholder="Search"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              className="w-[200px] bg-[rgb(var(--background-rgb))] text-[rgb(var(--foreground-rgb))] focus-visible:ring-0"
+            />
+            <Button
+              type="submit"
+              className="border rounded cursor-pointer text-[rgb(var(--foreground-rgb))]"
+            >
+              Search
+            </Button>
+          </form>
+        </div>
       </div>
     </nav>
   );

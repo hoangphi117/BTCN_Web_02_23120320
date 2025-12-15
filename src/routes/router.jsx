@@ -9,8 +9,6 @@ import PersonDetail from "@/pages/movie/PersonDetail";
 import RegisterPage from "@/pages/auth/RegisterPage";
 import LoginPage from "@/pages/auth/LoginPage";
 
-import ProtectedRoute from "./ProtectedRoute";
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,16 +16,9 @@ const router = createBrowserRouter([
     errorElement: <div>Oops! Đã xảy ra lỗi khi tải trang.</div>,
     children: [
       { index: true, element: <Home />, loader: homeLoader },
-      { path: "/movie/:id", element: <MovieDetail /> },
+      { path: "movie/:id", element: <MovieDetail /> },
       { path: "search", element: <SearchPage /> },
-      { path: "/persons/:id", element: <PersonDetail /> },
-      {
-        element: <ProtectedRoute />,
-        // children: [
-        //   { path: "profile", element: <ProfilePage /> },
-        //   { path: "favorites", element: <FavoritePage /> },
-        // ],
-      },
+      { path: "persons/:id", element: <PersonDetail /> },
     ],
   },
   {
