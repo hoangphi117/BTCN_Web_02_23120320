@@ -24,7 +24,7 @@ function MovieCard({ movie, title }) {
       onClick={() => {
         navigate(`/movie/${movie.id}`);
       }}
-      className="basis-1/3 flex-shrink-0 px-2 cursor-pointer relative hover:z-50"
+      className="basis-1/3 flex-shrink-0 px-5 cursor-pointer relative hover:z-50"
     >
       <div className="relative w-full h-full transition-transform duration-300 ease-out hover:scale-125 ">
         <div className="relative w-full aspect-square text-transparent hover:text-white">

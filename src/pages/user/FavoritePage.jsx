@@ -3,16 +3,20 @@ import { Link } from "react-router-dom";
 import { Loader2, HeartOff, Film } from "lucide-react";
 
 import MovieCard from "@/components/common/movie/MovieCard";
+import PaginationControls from "@/components/common/Pagination";
 import { useAuth } from "@/context/auth";
 
 const API_ROOT = "/api";
 const APP_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
 
+const ITEMS_PER_PAGE = 5;
+
 function FavoritePage() {
-  const { user } = useAuth();
-  const [movies, setMovies] = useState([]);
+  const [allMovies, setAllMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -35,7 +39,7 @@ function FavoritePage() {
         }
 
         const result = await response.json();
-        setMovies(Array.isArray(result) ? result : []);
+        setAllMovies(Array.isArray(result) ? result : []);
       } catch (error) {
         console.error("Lỗi tải favorites:", error);
       } finally {
@@ -45,6 +49,17 @@ function FavoritePage() {
 
     fetchFavorites();
   }, []);
+
+  const totalPages = Math.ceil(allMovies.length / ITEMS_PER_PAGE);
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+
+  const currentMovies = allMovies.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const foregroundColor = "text-[rgb(var(--foreground-rgb))]";
 
@@ -56,6 +71,11 @@ function FavoritePage() {
         >
           <Film className="text-pink-500" />
           My favorite movies
+          {!loading && allMovies.length > 0 && (
+            <span className="text-lg font-normal opacity-60 ml-2">
+              ({allMovies.length})
+            </span>
+          )}
         </h1>
       </div>
 
@@ -63,14 +83,25 @@ function FavoritePage() {
         <div className="flex justify-center items-center h-64">
           <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
         </div>
-      ) : movies.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {movies.map((movie) => (
-            <div key={movie.id} className="flex justify-center">
-              <MovieCard movie={movie} />
-            </div>
-          ))}
-        </div>
+      ) : allMovies.length > 0 ? (
+        <>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {currentMovies.map((movie) => (
+              <div key={movie.id} className="flex justify-center">
+                <MovieCard movie={movie} />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 pb-10">
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              loading={loading}
+            />
+          </div>
+        </>
       ) : (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <div className="bg-gray-100 dark:bg-slate-800 p-6 rounded-full mb-4">
