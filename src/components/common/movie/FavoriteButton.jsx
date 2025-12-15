@@ -1,61 +1,59 @@
 import React, { useState } from "react";
 import { Heart, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/auth";
-import { useNavigate } from "react-router-dom";
 
 const API_ROOT = "/api";
 const APP_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
 
-const FavoriteButton = ({
-  movieId,
-  initialIsFavorite = false,
-  className = "",
-}) => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
-  const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
+const AddToFavoritesButton = ({ movie }) => {
+  const { user, favorites, refreshFavorites, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleToggleFavorite = async (e) => {
-    e.preventDefault();
+  const isFavorite =
+    Array.isArray(favorites) &&
+    movie?.id &&
+    favorites.some((fav) => fav && String(fav.id) === String(movie.id));
+
+  const toggleFavorite = async (e) => {
     e.stopPropagation();
 
     if (!user) {
-      if (
-        confirm(
-          "You need to log in to add movies to your favorites. Go to the login page now?"
-        )
-      ) {
-        navigate("/login");
-      }
+      alert("Vui lòng đăng nhập để sử dụng tính năng này!");
       return;
     }
 
+    if (!movie?.id) return;
+
     setIsLoading(true);
-    const token = localStorage.getItem("authToken");
 
     try {
+      const token = localStorage.getItem("authToken");
       const method = isFavorite ? "DELETE" : "POST";
+      const url = `${API_ROOT}/users/favorites/${movie.id}`;
 
-      const response = await fetch(`${API_ROOT}/users/favorites/${movieId}`, {
+      const response = await fetch(url, {
         method: method,
         headers: {
           "Content-Type": "application/json",
-          "x-app-token": APP_TOKEN,
           Authorization: `Bearer ${token}`,
+          "x-app-token": APP_TOKEN,
         },
       });
 
-      if (!response.ok) {
-        throw new Error("Operation failed");
+      if (response.status === 401) {
+        logout();
+        return;
       }
 
-      setIsFavorite(!isFavorite);
+      if (!response.ok) {
+        throw new Error("Không thể cập nhật danh sách yêu thích");
+      }
+
+      await refreshFavorites();
     } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred, please try again later.");
+      console.error("Lỗi:", error);
+      alert("Có lỗi xảy ra, vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }
@@ -63,24 +61,19 @@ const FavoriteButton = ({
 
   return (
     <button
-      onClick={handleToggleFavorite}
+      onClick={toggleFavorite}
       disabled={isLoading}
-      className={`group flex items-center justify-center p-2 rounded-full transition-all duration-200 cursor-pointer 
-        ${
-          isFavorite
-            ? "bg-pink-100 dark:bg-pink-900/30 text-red-500"
-            : "bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm"
-        } 
-        ${className}`}
-      title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+      className="p-2 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-200 group/btn"
+      title={isFavorite ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích"}
     >
       {isLoading ? (
-        <Loader2 size={20} className="animate-spin" />
+        <Loader2 className="w-5 h-5 text-white animate-spin" />
       ) : (
         <Heart
-          size={20}
-          className={`transition-transform duration-200 group-hover:scale-110 ${
-            isFavorite ? "fill-current" : ""
+          className={`w-5 h-5 transition-colors duration-200 ${
+            isFavorite
+              ? "fill-red-500 text-red-500"
+              : "text-white group-hover/btn:text-red-400"
           }`}
         />
       )}
@@ -88,4 +81,4 @@ const FavoriteButton = ({
   );
 };
 
-export default FavoriteButton;
+export default AddToFavoritesButton;
