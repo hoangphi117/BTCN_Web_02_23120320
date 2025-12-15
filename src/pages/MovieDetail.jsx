@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
-  ChevronLeft,
   Star,
   Calendar,
   Clock,
@@ -10,6 +9,8 @@ import {
   Award,
   User,
 } from "lucide-react";
+
+import MovieCard from "@/components/common/MovieCard";
 
 const API_ROOT = "/api";
 const APP_TOKEN =
@@ -22,9 +23,9 @@ const PUBLIC_HEADERS = {
 
 function MovieDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
@@ -150,6 +151,9 @@ function MovieDetail() {
               {movie.actors &&
                 movie.actors.map((actor) => (
                   <div
+                    onClick={() => {
+                      navigate(`/persons/${actor.id}`);
+                    }}
                     key={actor.id}
                     className="min-w-[120px] w-[120px] flex flex-col items-center text-center space-y-2"
                   >
@@ -215,6 +219,18 @@ function MovieDetail() {
               </div>
             </section>
           )}
+          {movie.similar_movies && (
+            <section className="mt-8">
+              <h3 className={`text-2xl font-bold mb-4 ${foregroundColor}`}>
+                Similar Movies
+              </h3>
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                {movie.similar_movies.map((similarMovie) => (
+                  <MovieCard key={similarMovie.id} movie={similarMovie} />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
         <div className="space-y-6">
@@ -260,7 +276,13 @@ function MovieDetail() {
             <div className="space-y-2">
               {movie.directors &&
                 movie.directors.map((dir) => (
-                  <div key={dir.id} className="flex items-center gap-3">
+                  <div
+                    onClick={() => {
+                      navigate(`/persons/${dir.id}`);
+                    }}
+                    key={dir.id}
+                    className="flex items-center gap-3"
+                  >
                     <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden">
                       {dir.image ? (
                         <img

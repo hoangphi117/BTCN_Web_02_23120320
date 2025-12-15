@@ -5,6 +5,7 @@ import MainLayout from "@/components/layouts/MainLayout";
 import Home, { homeLoader } from "@/pages/Home";
 import MovieDetail from "@/pages/MovieDetail";
 import SearchPage from "@/pages/SearchPage";
+import PersonDetail from "@/pages/PersonDetail";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home />, loader: homeLoader },
       { path: "/movie/:id", element: <MovieDetail /> },
       { path: "search", element: <SearchPage /> },
+      { path: "/persons/:id", element: <PersonDetail /> },
     ],
   },
 ]);

@@ -1,22 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Award, Cake, Ruler, Film, BookOpen } from "lucide-react";
 
 import PersonMovieCard from "@/components/common/PersonMovieCard";
 
 import { formatDate } from "@/lib/utils";
 
+const API_ROOT = "/api";
+const APP_TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
+
+const PUBLIC_HEADERS = {
+  "x-app-token": APP_TOKEN,
+  "Content-Type": "application/json",
+};
+
 function PersonDetail() {
   const foregroundColor = "text-[rgb(var(--foreground-rgb))]";
 
-  const isDead = false;
+  const { id } = useParams();
+  const [person, setPerson] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPerSonDetail = async () => {
+      try {
+        const response = await fetch(`${API_ROOT}/persons/${id}`, {
+          headers: PUBLIC_HEADERS,
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch person detail");
+        const result = await response.json();
+
+        setPerson(result.data || result);
+      } catch (error) {
+        console.error("Error fetching detail:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchPerSonDetail();
+  }, [id]);
+
+  if (loading)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Đang tải...
+      </div>
+    );
+  if (!person)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Không tìm thấy phim
+      </div>
+    );
 
   const birthDate = formatDate(person.birth_date);
-  const deathDate = person.death_date ? formatDate(person.birth_date) : null;
+  const deathDate = person.death_date ? formatDate(person.death_date) : null;
 
-  if (deathDate) {
-    console.log(deathDate);
-    isDead = true;
-  }
+  const isDead = Boolean(deathDate);
 
   return (
     <div className="animate-fade-in pb-10 pt-4">
@@ -62,7 +105,9 @@ function PersonDetail() {
                     <Award size={18} />
                     <span className="font-bold">Awards</span>
                   </div>
-                  <p className="text-xs pl-6 mt-1">{person.awards}</p>
+                  <p className="text-xs text-white pl-6 mt-1">
+                    {person.awards}
+                  </p>
                 </div>
               )}
             </div>
