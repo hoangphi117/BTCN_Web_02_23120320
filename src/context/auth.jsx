@@ -15,6 +15,8 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [user, setUser] = useState(null);
+
   const register = async (userData) => {
     setLoading(true);
     setError(null);
@@ -44,7 +46,41 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const login = async (email, password) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${API_ROOT}/users/login`, {
+        method: "POST",
+        headers: PUBLIC_HEADERS,
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Email hoặc mật khẩu không đúng.");
+      }
+
+      const { user: userData, token } = result;
+      localStorage.setItem("authToken", token);
+      setUser(userData);
+
+      return result;
+    } catch (err) {
+      console.log("Auth login error:", err);
+      setError(err.message);
+      localStorage.removeItem("authToken");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = {
+    user,
+    login,
     register,
     loading,
     error,
