@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Award, Cake, Ruler, Film, BookOpen } from "lucide-react";
 
-import PersonMovieCard from "@/components/common/PersonMovieCard";
+import PersonMovieCard from "@/components/common/movie/PersonMovieCard";
 
 import { formatDate } from "@/lib/utils";
 

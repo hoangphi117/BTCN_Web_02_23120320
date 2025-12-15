@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import MovieCard from "@/components/common/MovieCard";
+import MovieCard from "@/components/common/movie/MovieCard";
 import { Loader2, SearchX } from "lucide-react";
 
 const API_ROOT = "/api";

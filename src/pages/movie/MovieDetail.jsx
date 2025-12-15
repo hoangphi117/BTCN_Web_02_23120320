@@ -10,8 +10,8 @@ import {
   User,
 } from "lucide-react";
 
-import MovieCard from "@/components/common/MovieCard";
-import MovieReviews from "@/components/common/Review";
+import MovieCard from "@/components/common/movie/MovieCard";
+import MovieReviews from "@/components/common/movie/Review";
 
 const API_ROOT = "/api";
 const APP_TOKEN =

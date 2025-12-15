@@ -3,9 +3,9 @@ import React from "react";
 
 import MainLayout from "@/components/layouts/MainLayout";
 import Home, { homeLoader } from "@/pages/Home";
-import MovieDetail from "@/pages/MovieDetail";
+import MovieDetail from "@/pages/movie/MovieDetail";
 import SearchPage from "@/pages/SearchPage";
-import PersonDetail from "@/pages/PersonDetail";
+import PersonDetail from "@/pages/movie/PersonDetail";
 
 const router = createBrowserRouter([
   {
