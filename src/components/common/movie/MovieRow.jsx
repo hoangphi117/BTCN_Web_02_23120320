@@ -4,17 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 import FavoriteButton from "./FavoriteButton";
 
-const API_ROOT = "/api";
-const APP_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
+import { API_ROOT, PUBLIC_HEADERS } from "@/config/api";
 
 const PAGE_SIZE = 12;
 const ITEMS_PER_VIEW = 3;
-
-const PUBLIC_HEADERS = {
-  "x-app-token": APP_TOKEN,
-  "Content-Type": "application/json",
-};
 
 function MovieCard({ movie, title }) {
   const navigate = useNavigate();

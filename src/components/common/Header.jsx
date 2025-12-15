@@ -55,7 +55,7 @@ function Header() {
           <div className="flex text-[rgb(var(--foreground-rgb))]">
             {user ? (
               <>
-                <Link to="/" className="hover:underline">
+                <Link to="/users/profile" className="hover:underline">
                   {user.username}
                 </Link>
                 <span className="mx-1 text-muted-foreground"></span>

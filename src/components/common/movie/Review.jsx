@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Star, MessageSquare, Filter, ChevronDown } from "lucide-react";
+import { Star, MessageSquare, Filter } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { API_ROOT, PUBLIC_HEADERS } from "@/config/api";
 
 import PaginationControls from "../Pagination";
-
-const API_ROOT = "/api";
-const APP_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
-
-const PUBLIC_HEADERS = {
-  "x-app-token": APP_TOKEN,
-  "Content-Type": "application/json",
-};
 
 function MovieReviews({ movieId }) {
   const [reviews, setReviews] = useState([]);

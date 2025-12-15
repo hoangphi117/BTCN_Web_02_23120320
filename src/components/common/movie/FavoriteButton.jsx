@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Heart, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/auth";
 
-const API_ROOT = "/api";
-const APP_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
+import { API_ROOT, APP_TOKEN } from "@/config/api";
 
 const AddToFavoritesButton = ({ movie }) => {
   const { user, favorites, refreshFavorites, logout } = useAuth();

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, HeartOff, Film } from "lucide-react";
+import { API_ROOT, APP_TOKEN } from "@/config/api";
 
 import MovieCard from "@/components/common/movie/MovieCard";
 import PaginationControls from "@/components/common/Pagination";
-import { useAuth } from "@/context/auth";
-
-const API_ROOT = "/api";
-const APP_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
 
 const ITEMS_PER_PAGE = 5;
 

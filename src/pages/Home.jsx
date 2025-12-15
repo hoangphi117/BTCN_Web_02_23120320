@@ -1,16 +1,10 @@
 import { useLoaderData } from "react-router-dom";
 
+import { API_ROOT, PUBLIC_HEADERS } from "@/config/api";
+
 import MainContent from "@/components/common/MainContent";
 
-const API_ROOT = "/api";
-const APP_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
 const PAGE_SIZE = 15;
-
-const PUBLIC_HEADERS = {
-  "x-app-token": APP_TOKEN,
-  "Content-Type": "application/json",
-};
 
 async function fetchAndExtractData(path, page = 1) {
   const url = `${API_ROOT}${path}?page=${page}&page_size=${PAGE_SIZE}`;

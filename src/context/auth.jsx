@@ -3,15 +3,7 @@ import { Loader2 } from "lucide-react";
 
 const AuthContext = createContext();
 
-const API_ROOT = "/api";
-const APP_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
-
-const PUBLIC_HEADERS = {
-  "x-app-token": APP_TOKEN,
-  "Content-Type": "application/json",
-};
-
+import { API_ROOT, PUBLIC_HEADERS, APP_TOKEN } from "@/config/api";
 const fetchUserProfile = async (token) => {
   const response = await fetch(`${API_ROOT}/users/profile`, {
     method: "GET",
