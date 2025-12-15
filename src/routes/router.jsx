@@ -7,6 +7,7 @@ import MovieDetail from "@/pages/movie/MovieDetail";
 import SearchPage from "@/pages/movie/SearchPage";
 import PersonDetail from "@/pages/movie/PersonDetail";
 import RegisterPage from "@/pages/auth/RegisterPage";
+import LoginPage from "@/pages/auth/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "register",
     element: <RegisterPage />,
+  },
+  {
+    path: "login",
+    element: <LoginPage />,
   },
 ]);
 

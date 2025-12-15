@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (username, password) => {
     setLoading(true);
     setError(null);
 
@@ -54,13 +54,13 @@ export function AuthProvider({ children }) {
       const response = await fetch(`${API_ROOT}/users/login`, {
         method: "POST",
         headers: PUBLIC_HEADERS,
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Email hoặc mật khẩu không đúng.");
+        throw new Error("Username or password is incorrect.");
       }
 
       const { user: userData, token } = result;
