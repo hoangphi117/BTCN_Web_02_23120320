@@ -77,6 +77,23 @@ function MovieReviews({ movieId }) {
             ({totalReviews})
           </span>
         </h3>
+
+        <div className="relative group">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className={`appearance-none pl-4 pr-10 py-2 rounded-lg bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm font-medium ${foregroundColor} focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer`}
+          >
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="highest">Highest</option>
+            <option value="lowest">Lowest</option>
+          </select>
+          <Filter
+            size={14}
+            className={`absolute right-3 top-1/2 -translate-y-1/2 ${foregroundColor} opacity-50 pointer-events-none`}
+          />
+        </div>
       </div>
 
       <div className="space-y-4">
