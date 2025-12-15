@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import React from "react";
+import React, { lazy } from "react";
 
 import MainLayout from "@/components/layouts/MainLayout";
 import Home, { homeLoader } from "@/pages/Home";
@@ -10,6 +10,8 @@ import RegisterPage from "@/pages/auth/RegisterPage";
 import LoginPage from "@/pages/auth/LoginPage";
 
 import ProtectedRoute from "./ProtectedRoute";
+
+const ProfilePage = lazy(() => import("@/pages/user/ProfilePage.jsx"));
 
 const router = createBrowserRouter([
   {
@@ -24,7 +26,7 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          //   { path: "users/profile", element: <ProfilePage /> },
+          { path: "users/profile", element: <ProfilePage /> },
           //   { path: "favorites", element: <FavoritePage /> },
         ],
       },
