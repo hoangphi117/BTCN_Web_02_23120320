@@ -1,7 +1,15 @@
-export const ProtectedRoute = ({ redirectTo = "/login" }) => {
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "@/context/auth";
+
+const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) {
-    return <Navigate to={redirectTo} replace />;
+
+  if (isAuthenticated) {
+    return <Outlet />;
   }
-  return <Outlet />;
+
+  return <Navigate to="/login" replace />;
 };
+
+export default ProtectedRoute;
