@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Loader2, Save, User, Calendar, Phone, Mail } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -17,12 +19,25 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { useAuth } from "@/context/auth";
 
+// --- CẤU HÌNH API ---
 const API_ROOT = "/api";
 const APP_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
+
+// --- 1. ĐỊNH NGHĨA SCHEMA VALIDATION VỚI ZOD ---
+const profileSchema = z.object({
+  email: z.string().email("Email không hợp lệ"),
+  phone: z.string().regex(/^(0|\+84)(3|5|7|8|9)[0-9]{8}$/, {
+    message: "Invalid phone number",
+  }),
+  dob: z.string().refine((date) => new Date(date) <= new Date(), {
+    message: "Date of birth cannot be in the future",
+  }),
+});
 
 function ProfilePage() {
   const { user, setUser } = useAuth();
@@ -30,7 +45,9 @@ function ProfilePage() {
   const [message, setMessage] = useState({ type: "", content: "" });
 
   const form = useForm({
+    resolver: zodResolver(profileSchema),
     defaultValues: {
+      username: "",
       email: "",
       phone: "",
       dob: "",
@@ -44,6 +61,7 @@ function ProfilePage() {
         : "";
 
       form.reset({
+        username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
         dob: formattedDob,
@@ -57,7 +75,9 @@ function ProfilePage() {
 
     try {
       const token = localStorage.getItem("authToken");
+      if (!token) throw new Error("Bạn chưa đăng nhập!");
 
+      // Gọi API PATCH /users/profile
       const response = await fetch(`${API_ROOT}/users/profile`, {
         method: "PATCH",
         headers: {
@@ -71,7 +91,7 @@ function ProfilePage() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Update failed!");
+        throw new Error(result.message || "Cập nhật thất bại.");
       }
 
       const updatedUser = result.data || { ...user, ...values };
@@ -79,14 +99,11 @@ function ProfilePage() {
 
       setMessage({
         type: "success",
-        content: "Updated successfully!",
+        content: "Cập nhật thông tin thành công!",
       });
     } catch (error) {
       console.error("Profile update error:", error);
-      setMessage({
-        type: "error",
-        content: error.message || "Something went wrong",
-      });
+      setMessage({ type: "error", content: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -134,8 +151,8 @@ function ProfilePage() {
                     <FormControl>
                       <div className="relative">
                         <Mail
-                          className="absolute left-3 top-3 text-gray-400"
                           size={16}
+                          className="absolute left-3 top-3 text-gray-400"
                         />
                         <Input
                           placeholder="example@email.com"
@@ -144,6 +161,7 @@ function ProfilePage() {
                         />
                       </div>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -160,8 +178,8 @@ function ProfilePage() {
                     <FormControl>
                       <div className="relative">
                         <Phone
-                          className="absolute left-3 top-3 text-gray-400"
                           size={16}
+                          className="absolute left-3 top-3 text-gray-400"
                         />
                         <Input
                           placeholder="0912..."
@@ -170,6 +188,7 @@ function ProfilePage() {
                         />
                       </div>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -186,16 +205,17 @@ function ProfilePage() {
                     <FormControl>
                       <div className="relative">
                         <Calendar
-                          className="absolute left-3 top-3 text-gray-400"
                           size={16}
+                          className="absolute left-3 top-3 text-gray-400"
                         />
                         <Input
                           type="date"
                           {...field}
-                          className={`pl-9 ${foregroundColor}`}
+                          className={`pl-9 ${foregroundColor} block`}
                         />
                       </div>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
