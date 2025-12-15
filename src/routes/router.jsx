@@ -1,18 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
 import React, { lazy } from "react";
 
-import MainLayout from "@/components/layouts/MainLayout";
-import Home, { homeLoader } from "@/pages/Home";
-import MovieDetail from "@/pages/movie/MovieDetail";
-import SearchPage from "@/pages/movie/SearchPage";
-import PersonDetail from "@/pages/movie/PersonDetail";
-import RegisterPage from "@/pages/auth/RegisterPage";
-import LoginPage from "@/pages/auth/LoginPage";
-
-import ProtectedRoute from "./ProtectedRoute";
-
+const Home = lazy(() => import("@/pages/Home"));
+const MovieDetail = lazy(() => import("@/pages/movie/MovieDetail"));
+const SearchPage = lazy(() => import("@/pages/movie/SearchPage"));
+const PersonDetail = lazy(() => import("@/pages/movie/PersonDetail"));
+const RegisterPage = lazy(() => import("@/pages/auth/RegisterPage"));
+const LoginPage = lazy(() => import("@/pages/auth/LoginPage"));
 const ProfilePage = lazy(() => import("@/pages/user/ProfilePage.jsx"));
 const FavoritePage = lazy(() => import("@/pages/user/FavoritePage.jsx"));
+
+import MainLayout from "@/components/layouts/MainLayout";
+
+import { homeLoader } from "@/pages/Home";
+
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
