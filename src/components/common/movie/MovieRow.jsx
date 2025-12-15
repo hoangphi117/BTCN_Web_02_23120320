@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import FavoriteButton from "./FavoriteButton";
+
 const API_ROOT = "/api";
 const APP_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIzXzMxIiwicm9sZSI6InVzZXIiLCJhcGlfYWNjZXNzIjp0cnVlLCJpYXQiOjE3NjUzNjE3NjgsImV4cCI6MTc3MDU0NTc2OH0.O4I48nov3NLaKDSBhrPe9rKZtNs9q2Tkv4yK0uMthoo";
@@ -31,6 +33,10 @@ function MovieCard({ movie, title }) {
             alt={movie.title}
             className="w-full h-full shadow-md "
           />
+
+          <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+            <FavoriteButton movieId={movie.id} />
+          </div>
 
           <p
             className="

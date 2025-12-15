@@ -145,7 +145,7 @@ export function AuthProvider({ children }) {
     return (
       <div className="flex justify-center items-center min-h-screen text-xl text-[rgb(var(--foreground-rgb))]">
         <Loader2 className="mr-3 h-6 w-6 animate-spin text-blue-500" />
-        Đang tải dữ liệu người dùng...
+        Loading...
       </div>
     );
   }

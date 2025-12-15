@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Star, Calendar, Clock } from "lucide-react";
 
+import FavoriteButton from "./FavoriteButton";
+
 function MovieCard({ movie }) {
   const navigate = useNavigate();
 
@@ -19,6 +21,10 @@ function MovieCard({ movie }) {
           className="w-full h-full object-cover"
           loading="lazy"
         />
+
+        <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+          <FavoriteButton movieId={movie.id} />
+        </div>
 
         {movie.rank && (
           <div className="absolute top-1 left-1 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">

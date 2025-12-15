@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import FavoriteButton from "./FavoriteButton";
+
 function FeaturedMovie({ movies }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
@@ -53,6 +55,9 @@ function FeaturedMovie({ movies }) {
               alt={movie.title}
               className="w-full h-full object-cover"
             />
+            <div className="absolute top-2 right-2 z-100">
+              <FavoriteButton movieId={movie.id} />
+            </div>
           </div>
 
           <div className="text-center space-y-2 max-w-lg">
