@@ -118,7 +118,21 @@ function MovieReviews({ movieId }) {
               </h4>
 
               <div className="relative group/spoiler">
-                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                {review.warning_spoilers && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-200/50 dark:bg-black/50 backdrop-blur-md rounded-lg z-10 group-hover/spoiler:opacity-0 transition-opacity duration-300 cursor-pointer">
+                    <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-lg">
+                      ⚠️ Spoiler Alert (Hover to view)
+                    </span>
+                  </div>
+                )}
+
+                <p
+                  className={`text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line ${
+                    review.warning_spoilers
+                      ? "blur-sm group-hover/spoiler:blur-none transition-all duration-300"
+                      : ""
+                  }`}
+                >
                   {review.content}
                 </p>
               </div>

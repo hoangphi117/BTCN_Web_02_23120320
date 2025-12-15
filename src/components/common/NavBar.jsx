@@ -19,17 +19,15 @@ function NavBar() {
   return (
     <nav className="bg-[rgb(var(--nav-bg-rgb))] shadow-md transition-colors duration-300">
       <div className="max-w-[1200px] mx-auto px-4 flex items-center h-14">
-        <Link to="/" className="mr-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hover:bg-transparent cursor-pointer"
-          >
-            <span className="text-2xl text-[rgb(var(--foreground-rgb))] transition-colors">
-              🏠︎
-            </span>
-          </Button>
-        </Link>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hover:bg-transparent cursor-pointer"
+        >
+          <span className="text-2xl text-[rgb(var(--foreground-rgb))] transition-colors">
+            🏠︎
+          </span>
+        </Button>
 
         <form
           onSubmit={handleSearch}
