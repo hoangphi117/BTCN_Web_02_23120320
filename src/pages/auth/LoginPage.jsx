@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { Loader2, ArrowRight, User2, Lock } from "lucide-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +19,11 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { useAuth } from "@/context/auth";
 
+const loginSchema = z.object({
+  username: z.string().min(2, { message: "Username is required" }),
+  password: z.string().min(1, { message: "Password is required" }),
+});
+
 function LoginPage() {
   const navigate = useNavigate();
   const { login, loading } = useAuth();
@@ -26,14 +33,16 @@ function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "onBlur" });
+  } = useForm({
+    mode: "onBlur",
+    resolver: zodResolver(loginSchema),
+  });
 
   const onSubmit = async (data) => {
     setSubmitError(null);
 
     try {
       await login(data.username, data.password);
-
       navigate("/");
     } catch (err) {
       setSubmitError(
@@ -84,9 +93,7 @@ function LoginPage() {
                 <Input
                   id="username"
                   type="text"
-                  {...register("username", {
-                    required: "Please enter username",
-                  })}
+                  {...register("username")}
                   className={`pl-10 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 bg-transparent border-gray-300 dark:border-gray-700 ${foregroundColor}`}
                   placeholder="Username"
                 />
@@ -110,9 +117,7 @@ function LoginPage() {
                 <Input
                   id="password"
                   type="password"
-                  {...register("password", {
-                    required: "Please enter password",
-                  })}
+                  {...register("password")}
                   className={`pl-10 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 bg-transparent border-gray-300 dark:border-gray-700 ${foregroundColor}`}
                   placeholder="Password"
                 />
