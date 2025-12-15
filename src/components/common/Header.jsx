@@ -1,6 +1,7 @@
 import { useTheme } from "@/components/theme-provider";
 import { Switch } from "../ui/switch";
 import { Sun, Moon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Header() {
   const { setTheme, theme } = useTheme();
@@ -8,6 +9,7 @@ function Header() {
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+
   return (
     <header className="bg-[rgb(var(--header-bg-rgb))] rounded shadow-sm transition-colors duration-300">
       <div className="flex items-center justify-between p-3 px-4">
@@ -45,6 +47,15 @@ function Header() {
                 </span>
               )}
             </div>
+          </div>
+          <div className="flex text-[rgb(var(--foreground-rgb))]">
+            <Link to="/login" className="hover:underline">
+              Login
+            </Link>
+            <span className="mx-1 text-muted-foreground">/</span>
+            <Link to="/register" className="hover:underline">
+              Register
+            </Link>
           </div>
         </div>
       </div>

@@ -39,6 +39,8 @@ export function AuthProvider({ children }) {
       console.log("Auth register error:", err);
       setError(err.message);
       throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
