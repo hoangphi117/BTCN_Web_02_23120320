@@ -19,7 +19,7 @@ const AddToFavoritesButton = ({ movie }) => {
     e.stopPropagation();
 
     if (!user) {
-      alert("Vui lòng đăng nhập để sử dụng tính năng này!");
+      alert("Please login to use this feature!");
       return;
     }
 
@@ -47,13 +47,13 @@ const AddToFavoritesButton = ({ movie }) => {
       }
 
       if (!response.ok) {
-        throw new Error("Không thể cập nhật danh sách yêu thích");
+        throw new Error("Cannot update favorites list");
       }
 
       await refreshFavorites();
     } catch (error) {
       console.error("Lỗi:", error);
-      alert("Có lỗi xảy ra, vui lòng thử lại.");
+      alert("Error occurred, please try again!");
     } finally {
       setIsLoading(false);
     }
@@ -64,7 +64,7 @@ const AddToFavoritesButton = ({ movie }) => {
       onClick={toggleFavorite}
       disabled={isLoading}
       className="p-2 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-all duration-200 group/btn"
-      title={isFavorite ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích"}
+      title={isFavorite ? "Remove from favorites" : "Add to favorites"}
     >
       {isLoading ? (
         <Loader2 className="w-5 h-5 text-white animate-spin" />

@@ -35,7 +35,7 @@ function MovieCard({ movie, title }) {
           />
 
           <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-            <FavoriteButton movieId={movie.id} />
+            <FavoriteButton movie={movie} />
           </div>
 
           <p
@@ -99,7 +99,7 @@ function MovieRow({ title, Movies = [], endpoint }) {
       if (combinedMovies.length > 0) {
         setMovies(combinedMovies);
         setApiPage(startPage);
-        setViewIndex(0); // reset slider
+        setViewIndex(0);
       }
     } catch (error) {
       console.error("Lỗi tải dữ liệu:", error);

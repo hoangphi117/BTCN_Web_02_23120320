@@ -29,8 +29,6 @@ function MovieDetail() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const [isMovieFavorited, setIsMovieFavorited] = useState(false);
-
   useEffect(() => {
     const fetchMovieDetail = async () => {
       try {
@@ -89,10 +87,7 @@ function MovieDetail() {
           </div>
 
           <div className="absolute top-2 right-2 z-10">
-            <FavoriteButton
-              movieId={movie.id}
-              initialIsFavorite={isMovieFavorited}
-            />
+            <FavoriteButton movie={movie} />
           </div>
 
           <div className="flex-1 space-y-4">

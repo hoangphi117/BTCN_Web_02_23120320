@@ -1,42 +1,28 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Star, Calendar, Clock } from "lucide-react";
-
-import { useAuth } from "@/context/auth";
-
-import FavoriteButton from "./FavoriteButton";
+import FavoritesButton from "@/components/common/movie/FavoriteButton";
 
 function MovieCard({ movie }) {
   const navigate = useNavigate();
-  const { user } = useAuth();
-
-  const isMovieFavorited = useMemo(() => {
-    if (!user || !user.favorites) return false;
-    return user.favorites.some((fav) => {
-      return fav.movieId === movie.id || fav.id === movie.id;
-    });
-  }, [user, movie.id]);
 
   const foregroundColor = "text-[rgb(var(--foreground-rgb))]";
 
   return (
     <div
       onClick={() => navigate(`/movie/${movie.id}`)}
-      className="w-[160px] md:w-[180px] flex-shrink-0 cursor-pointer flex flex-col gap-2 group px-2"
+      className="w-[160px] md:w-[180px] flex-shrink-0 cursor-pointer flex flex-col gap-2 group px-2 relative"
     >
       <div className="relative w-full aspect-[2/3] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-800 shadow-sm transition-opacity hover:opacity-90">
         <img
-          src={movie.image}
+          src={movie.image || movie.image_url}
           alt={movie.title}
           className="w-full h-full object-cover"
           loading="lazy"
         />
 
-        <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-          <FavoriteButton
-            movieId={movie.id}
-            initialIsFavorite={isMovieFavorited}
-          />
+        <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <FavoritesButton movie={movie} />
         </div>
 
         {movie.rank && (
@@ -56,7 +42,7 @@ function MovieCard({ movie }) {
         <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
           <div className="flex items-center gap-1">
             <Calendar size={12} />
-            <span>{movie.year}</span>
+            <span>{movie.year || movie.release_year}</span>
           </div>
 
           {movie.rate && (
@@ -67,10 +53,10 @@ function MovieCard({ movie }) {
           )}
         </div>
         <div className="flex items-center gap-1 text-xs text-gray-400 truncate">
-          {movie.runtime ? (
+          {movie.runtime || movie.runtime_mins ? (
             <>
               <Clock size={12} />
-              <span>{movie.runtime}</span>
+              <span>{movie.runtime || `${movie.runtime_mins} min`}</span>
             </>
           ) : (
             <span>{movie.genres?.[0]}</span>

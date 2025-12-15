@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -56,7 +56,7 @@ function FeaturedMovie({ movies }) {
               className="w-full h-full object-cover"
             />
             <div className="absolute top-2 right-2 z-100">
-              <FavoriteButton movieId={movie.id} />
+              <FavoriteButton movie={movie} />
             </div>
           </div>
 
