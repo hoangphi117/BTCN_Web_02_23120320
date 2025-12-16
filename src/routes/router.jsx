@@ -9,6 +9,7 @@ const RegisterPage = lazy(() => import("@/pages/auth/RegisterPage"));
 const LoginPage = lazy(() => import("@/pages/auth/LoginPage"));
 const ProfilePage = lazy(() => import("@/pages/user/ProfilePage.jsx"));
 const FavoritePage = lazy(() => import("@/pages/user/FavoritePage.jsx"));
+const NotFoundPage = lazy(() => import("@/pages/NotFoundPage.jsx"));
 
 import MainLayout from "@/components/layouts/MainLayout";
 
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <div>Oops! Đã xảy ra lỗi khi tải trang.</div>,
+    errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <Home />, loader: homeLoader },
       { path: "movie/:id", element: <MovieDetail /> },
